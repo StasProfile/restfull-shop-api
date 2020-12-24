@@ -2,14 +2,23 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const productRoutes = require('./api/routs/products');
 const orderRoutes = require('./api/routs/orders');
+mongoose.connect(
+    process.env.MONGO_URL,
+    { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true,
+    }
+  );
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended : false}));
 app.use(bodyParser.json());
-
+ 
 app.use((req,res,next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Headers',
